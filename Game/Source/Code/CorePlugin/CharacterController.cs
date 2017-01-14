@@ -108,6 +108,8 @@ namespace Game
 				CameraController camControl = this.GameObj.ParentScene.FindComponent<CameraController>();
 				camControl.ShakeScreen((damage * 0.1f) / (1.0f + damage * 0.1f));
 			}
+
+			this.UpdateColors();
 		}
 		public void Die()
 		{
@@ -141,9 +143,11 @@ namespace Game
 			TextRenderer textRenderer = this.GameObj.GetComponentsInChildren<TextRenderer>().FirstOrDefault();
 			SpriteRenderer directionRenderer = this.GameObj.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault();
 
+			float healthFactor = this.health / 100.0f;
+
 			ColorHsva primary = this.primaryColor.ToHsva();
 			ColorHsva shape = primary;
-			shape.S *= 0.75f;
+			shape.S *= 0.75f * healthFactor;
 			shape.V = MathF.Lerp(shape.V, 1.0f, 0.75f);
 			ColorHsva text = primary;
 			text.V *= 0.75f;
@@ -173,6 +177,13 @@ namespace Game
 
 			// Recover attack charge
 			this.attackCharge = MathF.Clamp(this.attackCharge + Time.TimeMult * Time.SPFMult, 0.0f, 1.0f);
+
+			// Recharge health
+			if (this.health < 100.0f)
+			{
+				this.health = MathF.Clamp(this.health + 0.05f * Time.TimeMult * Time.SPFMult, 0.0f, 100.0f);
+				this.UpdateColors();
+			}
 		}
 
 		void ICmpCollisionListener.OnCollisionBegin(Component sender, CollisionEventArgs args) { }

@@ -4,6 +4,7 @@ using System.Linq;
 
 using Duality;
 using Duality.Input;
+using Duality.Resources;
 
 namespace Game
 {
@@ -40,6 +41,9 @@ namespace Game
 			this.character.TargetDirection = movement;
 			if (gamepad.ButtonHit(GamepadButton.A))
 				this.character.Attack();
+
+			if (gamepad.ButtonHit(GamepadButton.Start))
+				Scene.Reload();
 		}
 	}
 }
