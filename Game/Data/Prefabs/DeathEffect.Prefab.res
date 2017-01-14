@@ -30,6 +30,7 @@
           <active dataType="Bool">true</active>
           <angularDrag dataType="Float">0.3</angularDrag>
           <constantForce dataType="Struct" type="Duality.Vector3" />
+          <disposeWhenDone dataType="Bool">true</disposeWhenDone>
           <emitters dataType="Struct" type="System.Collections.Generic.List`1[[Game.ParticleEmitter]]" id="2270042599">
             <_items dataType="Array" type="Game.ParticleEmitter[]" id="612705614" length="4">
               <item dataType="Struct" type="Game.ParticleEmitter" id="3092069072">

@@ -14,14 +14,15 @@ namespace Game
 	[RequiredComponent(typeof(Transform))]
 	public class ParticleEffect : Renderer, ICmpUpdatable, ICmpInitializable
 	{
-		private ContentRef<Material>  material      = null;
-		private Vector2               particleSize  = new Vector2(16, 16);
-		private Vector3               constantForce = Vector3.Zero;
-		private float                 linearDrag    = 0.3f;
-		private float                 angularDrag   = 0.3f;
-		private float                 fadeInAt      = 0.0f;
-		private float                 fadeOutAt     = 0.75f;
-		private List<ParticleEmitter> emitters      = new List<ParticleEmitter>();
+		private ContentRef<Material>  material        = null;
+		private Vector2               particleSize    = new Vector2(16, 16);
+		private Vector3               constantForce   = Vector3.Zero;
+		private float                 linearDrag      = 0.3f;
+		private float                 angularDrag     = 0.3f;
+		private float                 fadeInAt        = 0.0f;
+		private float                 fadeOutAt       = 0.75f;
+		private bool                  disposeWhenDone = false;
+		private List<ParticleEmitter> emitters        = new List<ParticleEmitter>();
 
 		[DontSerialize]
 		private float                 boundRadius   = 0.0f;
@@ -69,6 +70,11 @@ namespace Game
 		{
 			get { return this.fadeOutAt; }
 			set { this.fadeOutAt = value; }
+		}
+		public bool DisposeWhenDone
+		{
+			get { return this.disposeWhenDone; }
+			set { this.disposeWhenDone = value; }
 		}
 		public List<ParticleEmitter> Emitters
 		{
@@ -247,6 +253,12 @@ namespace Game
 
 			// Update particle emission
 			this.UpdateEmitters();
+
+			// No particles left? Dispose!
+			if (this.disposeWhenDone && this.particles.Count == 0 && this.emitters.All(e => e.IsDoneEmitting))
+			{
+				this.GameObj.DisposeLater();
+			}
 		}
 		void ICmpInitializable.OnInit(Component.InitContext context)
 		{

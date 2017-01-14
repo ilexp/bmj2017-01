@@ -107,6 +107,10 @@ namespace Game
 			get { return this.depthMult; }
 			set { this.depthMult = value; }
 		}
+		public bool IsDoneEmitting
+		{
+			get { return this.burstCount >= this.maxBurstCount && this.maxBurstCount >= 0; }
+		}
 
 		public void Update(ParticleEffect effect)
 		{

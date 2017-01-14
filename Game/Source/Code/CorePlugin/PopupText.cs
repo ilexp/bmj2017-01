@@ -64,14 +64,14 @@ namespace Game
 
 			this.UpdateText();
 
-			float growPhase = 0.1f;
+			float growPhase = 0.1f / MathF.Max(0.00001f, this.timeToLive);
 			if (this.lifetime < growPhase)
 				transform.RelativeScale = this.scale * this.lifetime / growPhase;
 			else
 				transform.RelativeScale = this.scale * (1.0f + 0.2f * (this.lifetime - growPhase) / (1.0f - growPhase));
 			transform.MoveBy((this.baseVel + this.addVel) * Time.TimeMult);
 
-			this.addVel += (Vector3.Zero - this.addVel) * (0.08f / MathF.Max(0.00001f, this.timeToLive)) * Time.TimeMult;
+			this.addVel += (Vector3.Zero - this.addVel) * 0.08f * Time.TimeMult;
 			this.lifetime += Time.TimeMult * Time.SPFMult / MathF.Max(0.00001f, this.timeToLive);
 			if (this.lifetime >= 1.0f)
 			{

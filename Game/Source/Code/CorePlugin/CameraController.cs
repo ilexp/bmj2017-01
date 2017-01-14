@@ -13,11 +13,12 @@ namespace Game
 	/// of the current tilemaps.
 	/// </summary>
 	[RequiredComponent(typeof(Transform))]
-	[RequiredComponent(typeof(Camera))]
 	public class CameraController : Component, ICmpUpdatable
 	{
 		private float smoothness = 1.0f;
 		private GameObject targetObj = null;
+		private Transform cameraOffsetTransform = null;
+		private float screenShake = 0.0f;
 
 		public float Smoothness
 		{
@@ -29,26 +30,31 @@ namespace Game
 			get { return this.targetObj; }
 			set { this.targetObj = value; }
 		}
+		public Transform CameraOffsetTransform
+		{
+			get { return this.cameraOffsetTransform; }
+			set { this.cameraOffsetTransform = value; }
+		}
+
+		public void ShakeScreen(float strength)
+		{
+			this.screenShake += strength;
+		}
 
 		void ICmpUpdatable.OnUpdate()
 		{
-			// Early-out, if no target is specified
+			if (this.cameraOffsetTransform == null) return;
 			if (this.targetObj == null) return;
 			if (this.targetObj.Transform == null) return;
 
 			Transform transform = this.GameObj.Transform;
-			Camera camera = this.GameObj.GetComponent<Camera>();
+			Camera camera = this.cameraOffsetTransform.GameObj.GetComponent<Camera>();
 
-			// The position to focus on.
 			Vector3 focusPos = this.targetObj.Transform.Pos;
-			// The position where the camera itself should move
 			Vector3 targetPos = focusPos - new Vector3(0.0f, 0.0f, camera.FocusDist);
-			// A relative movement vector that would place the camera directly at its target position.
 			Vector3 posDiff = (targetPos - transform.Pos);
-			// A relative movement vector that doesn't go all the way, but just a bit towards its target.
 			Vector3 targetVelocity = posDiff * 0.1f * MathF.Pow(2.0f, -this.smoothness);
 
-			// Move the camera
 			transform.MoveByAbs(targetVelocity * Time.TimeMult);
 		}
 	}
