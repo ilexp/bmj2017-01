@@ -35,10 +35,10 @@ namespace Game
 
 			return !hitAnything;
 		}
-		private void ChooseNewWaypoint()
+		private void ChooseNewWaypoint(Vector2 baseDir)
 		{
 			Transform transform = this.GameObj.Transform;
-			this.nextWaypoint = transform.Pos.Xy + MathF.Rnd.NextVector2() * 200.0f;
+			this.nextWaypoint = transform.Pos.Xy + (baseDir * 0.75f + MathF.Rnd.NextVector2() * 0.25f) * 200.0f;
 		}
 
 		void ICmpUpdatable.OnUpdate()
@@ -46,10 +46,12 @@ namespace Game
 			CharacterController character = this.GameObj.GetComponent<CharacterController>();
 			Transform transform = this.GameObj.Transform;
 
+			//VisualLog.Default.DrawConnection(transform.Pos.X, transform.Pos.Y, 0.0f, this.nextWaypoint.X, this.nextWaypoint.Y);
+
 			Vector2 diffToTarget = this.nextWaypoint - transform.Pos.Xy;
-			if (diffToTarget.Length < 25.0f || !this.HasLineOfSight(this.nextWaypoint, false))
+			if (diffToTarget.Length < 25.0f || !this.HasLineOfSight(transform.Pos.Xy + diffToTarget.Normalized * (diffToTarget.Length + 32.0f), false))
 			{
-				this.ChooseNewWaypoint();
+				this.ChooseNewWaypoint(diffToTarget / MathF.Max(diffToTarget.Length, 1.0f));
 				diffToTarget = this.nextWaypoint - transform.Pos.Xy;
 			}
 
