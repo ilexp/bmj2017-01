@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraController.cs" />
+    <Compile Include="Particle.cs" />
+    <Compile Include="ParticleEffect.cs" />
+    <Compile Include="ParticleEmitter.cs" />
     <Compile Include="PopupText.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="CorePlugin.cs" />

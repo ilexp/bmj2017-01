@@ -13,7 +13,10 @@ namespace Game
 	public class PopupText : Component, ICmpUpdatable, ICmpInitializable
 	{
 		private string text = "Message";
+		private float scale = 1.0f;
 		private ColorRgba color = ColorRgba.White;
+		private Vector3 addVel = Vector3.Zero;
+		private Vector3 baseVel = new Vector3(0.0f, 0.0f, -1.0f);
 
 		[DontSerialize] private float lifetime = 0.0f;
 
@@ -22,10 +25,20 @@ namespace Game
 			get { return this.text; }
 			set { this.text = value;  }
 		}
+		public float Scale
+		{
+			get { return this.scale; }
+			set { this.scale = value; }
+		}
 		public ColorRgba Color
 		{
 			get { return this.color; }
 			set { this.color = value; }
+		}
+		public Vector3 AdditionalVelocity
+		{
+			get { return this.addVel; }
+			set { this.addVel = value; }
 		}
 		
 		private void UpdateText()
@@ -43,11 +56,12 @@ namespace Game
 
 			float growPhase = 0.1f;
 			if (this.lifetime < growPhase)
-				transform.RelativeScale = this.lifetime / growPhase;
+				transform.RelativeScale = this.scale * this.lifetime / growPhase;
 			else
-				transform.RelativeScale = 0.5f + 0.5f * (1.0f - ((this.lifetime - growPhase) / (1.0f - growPhase)));
-			transform.MoveBy(new Vector3(0.0f, -1.0f, 0.0f) * Time.TimeMult);
+				transform.RelativeScale = this.scale * (1.0f + 0.2f * (this.lifetime - growPhase) / (1.0f - growPhase));
+			transform.MoveBy((this.baseVel + this.addVel) * Time.TimeMult);
 
+			this.addVel += (Vector3.Zero - this.addVel) * 0.08f * Time.TimeMult;
 			this.lifetime += Time.TimeMult * Time.SPFMult * 1.0f;
 			if (this.lifetime >= 1.0f)
 			{

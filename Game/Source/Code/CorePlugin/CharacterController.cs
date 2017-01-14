@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Duality;
+using Duality.Drawing;
+using Duality.Resources;
 using Duality.Components;
+using Duality.Components.Renderers;
 using Duality.Components.Physics;
 
 namespace Game
@@ -11,15 +14,24 @@ namespace Game
 	[RequiredComponent(typeof(RigidBody))]
 	public class CharacterController : Component, ICmpUpdatable, ICmpCollisionListener
 	{
+		private float health = 100.0f;
 		private float speed = 1.0f;
 		private float acceleration = 0.2f;
 		private Vector2 targetDirection = -Vector2.UnitY;
 		private Vector2 targetMovement = Vector2.Zero;
 		private Transform directionIndicator = null;
 		private float attackImpulse = 75.0f;
+		private ColorRgba primaryColor = ColorRgba.White;
+		private ContentRef<Prefab> hitMessagePrefab = null;
+		private ContentRef<Prefab> deathEffectPrefab = null;
 
 		[DontSerialize] private float attackCharge = 1.0f;
 
+		public float Health
+		{
+			get { return this.health; }
+			set { this.health = value; }
+		}
 		public float Speed
 		{
 			get { return this.speed; }
@@ -50,6 +62,21 @@ namespace Game
 			get { return this.directionIndicator; }
 			set { this.directionIndicator = value; }
 		}
+		public ColorRgba PrimaryColor
+		{
+			get { return this.primaryColor; }
+			set { this.primaryColor = value; }
+		}
+		public ContentRef<Prefab> HitMessagePrefab
+		{
+			get { return this.hitMessagePrefab; }
+			set { this.hitMessagePrefab = value; }
+		}
+		public ContentRef<Prefab> DeathEffectPrefab
+		{
+			get { return this.deathEffectPrefab; }
+			set { this.deathEffectPrefab = value; }
+		}
 
 		public void Attack()
 		{
@@ -62,6 +89,32 @@ namespace Game
 
 			body.ApplyLocalImpulse(appliedImpulse);
 			this.attackCharge -= this.attackCharge * clampedAttackDirection.Length;
+		}
+		public void Hit(float damage, Vector2 hitDirection)
+		{
+			GameObject hitMessageObj = this.hitMessagePrefab.Res.Instantiate(this.GameObj.Transform.Pos + new Vector3(0.0f, 0.0f, -15.0f));
+			PopupText hitMessage = hitMessageObj.GetComponent<PopupText>();
+
+			hitMessage.Text = ((int)damage).ToString();
+			hitMessage.AdditionalVelocity = new Vector3(hitDirection * 10.0f + MathF.Rnd.NextVector2() * 2.0f);
+			hitMessage.Scale = 1.0f + (damage * 0.1f) / (1.0f + damage * 0.1f);
+			hitMessage.Color = this.primaryColor;
+
+			this.GameObj.ParentScene.AddObject(hitMessageObj);
+
+			this.health -= damage;
+			if (this.health <= 0.0f)
+				this.Die();
+		}
+		public void Die()
+		{
+			GameObject deathEffectObj = this.deathEffectPrefab.Res.Instantiate(this.GameObj.Transform.Pos);
+			ParticleEffect deathEffect = deathEffectObj.GetComponent<ParticleEffect>();
+			deathEffect.Emitters[0].MaxColor = this.primaryColor.ToHsva();
+			deathEffect.Emitters[0].MinColor = (this.primaryColor * ColorRgba.Grey).ToHsva();
+			this.GameObj.ParentScene.AddObject(deathEffectObj);
+
+			this.GameObj.DisposeLater();
 		}
 
 		void ICmpUpdatable.OnUpdate()
@@ -94,6 +147,18 @@ namespace Game
 				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
 			VisualLog.Default.DrawText(args.CollisionData.Pos.X, args.CollisionData.Pos.Y, 0.0f, string.Format("{0:F}", args.CollisionData.NormalSpeed))
 				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
+
+			CharacterController otherCharacter = args.CollideWith.GetComponent<CharacterController>();
+			if (otherCharacter != null)
+			{
+				Vector2 hitDirection = args.CollisionData.Pos - this.GameObj.Transform.Pos.Xy;
+				float hitDirectionMatch = Vector2.Dot(hitDirection, this.targetDirection);
+				float damage = 0.1f * args.CollisionData.NormalSpeed * hitDirectionMatch;
+				if (damage > 10.0f)
+				{
+					otherCharacter.Hit(damage, args.CollisionData.Normal);
+				}
+			}
 		}
 	}
 }
