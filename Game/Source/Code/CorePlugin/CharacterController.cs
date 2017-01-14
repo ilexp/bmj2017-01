@@ -97,6 +97,13 @@ namespace Game
 				this.Die();
 			else
 				this.SpawnHitMessage(((int)damage).ToString(), damage, hitDirection, 1.0f);
+
+			Player player = this.GameObj.ParentScene.FindComponent<Player>();
+			if (player.Character == this)
+			{
+				CameraController camControl = this.GameObj.ParentScene.FindComponent<CameraController>();
+				camControl.ShakeScreen((damage * 0.1f) / (1.0f + damage * 0.1f));
+			}
 		}
 		public void Die()
 		{

@@ -56,6 +56,10 @@ namespace Game
 			Vector3 targetVelocity = posDiff * 0.1f * MathF.Pow(2.0f, -this.smoothness);
 
 			transform.MoveByAbs(targetVelocity * Time.TimeMult);
+
+			this.screenShake += (0.0f - this.screenShake) * 0.2f * Time.TimeMult;
+			this.cameraOffsetTransform.MoveTo(MathF.Rnd.NextVector3() * 100.0f * this.screenShake);
+			this.cameraOffsetTransform.TurnTo(MathF.Rnd.NextFloat(-1.0f, 1.0f) * MathF.DegToRad(5.0f) * this.screenShake);
 		}
 	}
 }
