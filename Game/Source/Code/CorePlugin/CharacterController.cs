@@ -77,6 +77,10 @@ namespace Game
 			get { return this.deathEffectPrefab; }
 			set { this.deathEffectPrefab = value; }
 		}
+		public float AttackCharge
+		{
+			get { return this.attackCharge; }
+		}
 
 		public void Attack()
 		{
@@ -113,7 +117,7 @@ namespace Game
 			deathEffect.Emitters[0].MinColor = (this.primaryColor * ColorRgba.Grey).ToHsva();
 			this.GameObj.ParentScene.AddObject(deathEffectObj);
 
-			this.SpawnHitMessage("AARGH", -this.health, Vector2.Zero, 3.0f);
+			this.SpawnHitMessage(MathF.Rnd.OneOf(IngameText.DeathMessage), -this.health, Vector2.Zero, 3.0f);
 
 			this.GameObj.DisposeLater();
 		}
