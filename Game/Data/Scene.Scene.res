@@ -996,9 +996,13 @@
                         <active dataType="Bool">true</active>
                         <gameobj dataType="ObjectRef">1149637638</gameobj>
                       </item>
+                      <item dataType="Struct" type="Game.EnemyAI" id="899328814">
+                        <active dataType="Bool">true</active>
+                        <gameobj dataType="ObjectRef">1149637638</gameobj>
+                      </item>
                     </_items>
-                    <_size dataType="Int">4</_size>
-                    <_version dataType="Int">6</_version>
+                    <_size dataType="Int">5</_size>
+                    <_version dataType="Int">7</_version>
                   </compList>
                   <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="2932712230" surrogate="true">
                     <header />
@@ -1008,12 +1012,14 @@
                         <item dataType="ObjectRef">1079270852</item>
                         <item dataType="ObjectRef">3718433174</item>
                         <item dataType="ObjectRef">2749475968</item>
+                        <item dataType="Type" id="2166914204" value="Game.EnemyAI" />
                       </keys>
                       <values dataType="Array" type="System.Object[]" id="672632782">
                         <item dataType="ObjectRef">3509952570</item>
                         <item dataType="ObjectRef">4212414162</item>
                         <item dataType="ObjectRef">1748330828</item>
                         <item dataType="ObjectRef">3816510733</item>
+                        <item dataType="ObjectRef">899328814</item>
                       </values>
                     </body>
                   </compMap>

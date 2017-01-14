@@ -195,7 +195,7 @@
           <colCat dataType="Enum" type="Duality.Components.Physics.CollisionCategory" name="Cat1" value="1" />
           <colFilter />
           <colWith dataType="Enum" type="Duality.Components.Physics.CollisionCategory" name="All" value="2147483647" />
-          <continous dataType="Bool">false</continous>
+          <continous dataType="Bool">true</continous>
           <explicitInertia dataType="Float">0</explicitInertia>
           <explicitMass dataType="Float">80</explicitMass>
           <fixedAngle dataType="Bool">true</fixedAngle>
@@ -218,7 +218,7 @@
               </item>
             </_items>
             <_size dataType="Int">1</_size>
-            <_version dataType="Int">10</_version>
+            <_version dataType="Int">11</_version>
           </shapes>
         </item>
         <item dataType="Struct" type="Duality.Components.Renderers.RigidBodyRenderer" id="3847165433">

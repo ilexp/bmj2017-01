@@ -14,6 +14,7 @@ namespace Game
 	{
 		private string text = "Message";
 		private float scale = 1.0f;
+		private float timeToLive = 1.0f;
 		private ColorRgba color = ColorRgba.White;
 		private Vector3 addVel = Vector3.Zero;
 		private Vector3 baseVel = new Vector3(0.0f, 0.0f, -1.0f);
@@ -30,6 +31,11 @@ namespace Game
 			get { return this.scale; }
 			set { this.scale = value; }
 		}
+		public float TimeToLive
+		{
+			get { return this.timeToLive; }
+			set { this.timeToLive = value; }
+		}
 		public ColorRgba Color
 		{
 			get { return this.color; }
@@ -43,9 +49,13 @@ namespace Game
 		
 		private void UpdateText()
 		{
-			TextRenderer renderer = this.GameObj.GetComponent<TextRenderer>();
-			renderer.Text.SourceText = this.text;
-			renderer.ColorTint = this.color.WithAlpha(1.0f - this.lifetime);
+			foreach (TextRenderer renderer in this.GameObj.GetComponentsDeep<TextRenderer>())
+			{
+				float alpha = 1.0f - (this.lifetime - 0.75f) / 0.25f;
+				ColorRgba color = renderer.GameObj == this.GameObj ? this.color : ColorRgba.Black;
+				renderer.Text.SourceText = this.text;
+				renderer.ColorTint = color.WithAlpha(1.0f - this.lifetime);
+			}
 		}
 
 		void ICmpUpdatable.OnUpdate()
@@ -61,8 +71,8 @@ namespace Game
 				transform.RelativeScale = this.scale * (1.0f + 0.2f * (this.lifetime - growPhase) / (1.0f - growPhase));
 			transform.MoveBy((this.baseVel + this.addVel) * Time.TimeMult);
 
-			this.addVel += (Vector3.Zero - this.addVel) * 0.08f * Time.TimeMult;
-			this.lifetime += Time.TimeMult * Time.SPFMult * 1.0f;
+			this.addVel += (Vector3.Zero - this.addVel) * (0.08f / MathF.Max(0.00001f, this.timeToLive)) * Time.TimeMult;
+			this.lifetime += Time.TimeMult * Time.SPFMult / MathF.Max(0.00001f, this.timeToLive);
 			if (this.lifetime >= 1.0f)
 			{
 				this.GameObj.DisposeLater();

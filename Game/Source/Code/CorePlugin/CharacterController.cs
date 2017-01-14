@@ -92,19 +92,11 @@ namespace Game
 		}
 		public void Hit(float damage, Vector2 hitDirection)
 		{
-			GameObject hitMessageObj = this.hitMessagePrefab.Res.Instantiate(this.GameObj.Transform.Pos + new Vector3(0.0f, 0.0f, -15.0f));
-			PopupText hitMessage = hitMessageObj.GetComponent<PopupText>();
-
-			hitMessage.Text = ((int)damage).ToString();
-			hitMessage.AdditionalVelocity = new Vector3(hitDirection * 10.0f + MathF.Rnd.NextVector2() * 2.0f);
-			hitMessage.Scale = 1.0f + (damage * 0.1f) / (1.0f + damage * 0.1f);
-			hitMessage.Color = this.primaryColor;
-
-			this.GameObj.ParentScene.AddObject(hitMessageObj);
-
 			this.health -= damage;
 			if (this.health <= 0.0f)
 				this.Die();
+			else
+				this.SpawnHitMessage(((int)damage).ToString(), damage, hitDirection, 1.0f);
 		}
 		public void Die()
 		{
@@ -114,9 +106,24 @@ namespace Game
 			deathEffect.Emitters[0].MinColor = (this.primaryColor * ColorRgba.Grey).ToHsva();
 			this.GameObj.ParentScene.AddObject(deathEffectObj);
 
+			this.SpawnHitMessage("AARGH", -this.health, Vector2.Zero, 3.0f);
+
 			this.GameObj.DisposeLater();
 		}
 
+		private void SpawnHitMessage(string text, float damage, Vector2 hitDirection, float timeToLive)
+		{
+			GameObject hitMessageObj = this.hitMessagePrefab.Res.Instantiate(this.GameObj.Transform.Pos + new Vector3(0.0f, 0.0f, -15.0f));
+			PopupText hitMessage = hitMessageObj.GetComponent<PopupText>();
+
+			hitMessage.Text = text;
+			hitMessage.AdditionalVelocity = new Vector3(hitDirection * 10.0f + MathF.Rnd.NextVector2() * 2.0f);
+			hitMessage.Scale = 1.0f + (damage * 0.1f) / (1.0f + damage * 0.1f);
+			hitMessage.Color = this.primaryColor;
+			hitMessage.TimeToLive = timeToLive;
+
+			this.GameObj.ParentScene.AddObject(hitMessageObj);
+		}
 		private void UpdateColors()
 		{
 			RigidBodyRenderer bodyRenderer = this.GameObj.GetComponent<RigidBodyRenderer>();
@@ -161,17 +168,12 @@ namespace Game
 		void ICmpCollisionListener.OnCollisionEnd(Component sender, CollisionEventArgs args) { }
 		void ICmpCollisionListener.OnCollisionSolve(Component sender, CollisionEventArgs args)
 		{
-			VisualLog.Default.DrawPoint(args.CollisionData.Pos.X, args.CollisionData.Pos.Y, 0.0f)
-				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
-			VisualLog.Default.DrawText(args.CollisionData.Pos.X, args.CollisionData.Pos.Y, 0.0f, string.Format("{0:F}", args.CollisionData.NormalSpeed))
-				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
-
 			CharacterController otherCharacter = args.CollideWith.GetComponent<CharacterController>();
 			if (otherCharacter != null)
 			{
 				Vector2 hitDirection = args.CollisionData.Pos - this.GameObj.Transform.Pos.Xy;
 				float hitDirectionMatch = Vector2.Dot(hitDirection, this.targetDirection);
-				float damage = 0.1f * args.CollisionData.NormalSpeed * hitDirectionMatch;
+				float damage = 0.05f * args.CollisionData.NormalSpeed * hitDirectionMatch;
 				if (damage > 10.0f)
 				{
 					otherCharacter.Hit(damage, args.CollisionData.Normal);
