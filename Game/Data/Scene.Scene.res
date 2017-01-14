@@ -1024,6 +1024,64 @@
       <prefabLink />
     </item>
     <item dataType="ObjectRef">806606492</item>
+    <item dataType="Struct" type="Duality.GameObject" id="1333916902">
+      <active dataType="Bool">true</active>
+      <children />
+      <compList dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Component]]" id="2960775792">
+        <_items dataType="Array" type="Duality.Component[]" id="2751056188" length="4">
+          <item dataType="Struct" type="Duality.Components.Transform" id="3694231834">
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">1333916902</gameobj>
+          </item>
+          <item dataType="Struct" type="Duality.Components.Renderers.TextRenderer" id="3076545724">
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">1333916902</gameobj>
+          </item>
+          <item dataType="Struct" type="Game.PopupText" id="526416855">
+            <active dataType="Bool">true</active>
+            <gameobj dataType="ObjectRef">1333916902</gameobj>
+          </item>
+        </_items>
+        <_size dataType="Int">3</_size>
+        <_version dataType="Int">3</_version>
+      </compList>
+      <compMap dataType="Struct" type="System.Collections.Generic.Dictionary`2[[System.Type],[Duality.Component]]" id="2851842798" surrogate="true">
+        <header />
+        <body>
+          <keys dataType="Array" type="System.Object[]" id="1177566658">
+            <item dataType="ObjectRef">2357233476</item>
+            <item dataType="ObjectRef">2749475968</item>
+            <item dataType="Type" id="2511157776" value="Game.PopupText" />
+          </keys>
+          <values dataType="Array" type="System.Object[]" id="1387596298">
+            <item dataType="ObjectRef">3694231834</item>
+            <item dataType="ObjectRef">3076545724</item>
+            <item dataType="ObjectRef">526416855</item>
+          </values>
+        </body>
+      </compMap>
+      <compTransform dataType="ObjectRef">3694231834</compTransform>
+      <identifier dataType="Struct" type="System.Guid" surrogate="true">
+        <header>
+          <data dataType="Array" type="System.Byte[]" id="3892971698">jbEr0ap6HkWnDeRajqEFdQ==</data>
+        </header>
+        <body />
+      </identifier>
+      <initState dataType="Enum" type="Duality.InitState" name="Initialized" value="1" />
+      <name dataType="String">PopupText</name>
+      <parent />
+      <prefabLink dataType="Struct" type="Duality.Resources.PrefabLink" id="477069772">
+        <changes dataType="Struct" type="System.Collections.Generic.List`1[[Duality.Resources.PrefabLink+VarMod]]" id="726749240">
+          <_items dataType="Array" type="Duality.Resources.PrefabLink+VarMod[]" id="2440495724" length="4" />
+          <_size dataType="Int">0</_size>
+          <_version dataType="Int">91</_version>
+        </changes>
+        <obj dataType="ObjectRef">1333916902</obj>
+        <prefab dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Prefab]]">
+          <contentPath dataType="String">Data\Prefabs\PopupText.Prefab.res</contentPath>
+        </prefab>
+      </prefabLink>
+    </item>
     <item dataType="ObjectRef">3625091938</item>
     <item dataType="ObjectRef">2147806219</item>
     <item dataType="ObjectRef">2393796232</item>

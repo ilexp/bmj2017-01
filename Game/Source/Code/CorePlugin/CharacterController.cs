@@ -9,7 +9,7 @@ using Duality.Components.Physics;
 namespace Game
 {
 	[RequiredComponent(typeof(RigidBody))]
-	public class CharacterController : Component, ICmpUpdatable
+	public class CharacterController : Component, ICmpUpdatable, ICmpCollisionListener
 	{
 		private float speed = 1.0f;
 		private float acceleration = 0.2f;
@@ -17,6 +17,8 @@ namespace Game
 		private Vector2 targetMovement = Vector2.Zero;
 		private Transform directionIndicator = null;
 		private float attackImpulse = 75.0f;
+
+		[DontSerialize] private float attackCharge = 1.0f;
 
 		public float Speed
 		{
@@ -56,9 +58,10 @@ namespace Game
 
 			Vector2 attackDirection = this.targetDirection;
 			Vector2 clampedAttackDirection = attackDirection / MathF.Max(1.0f, attackDirection.Length);
-			Vector2 appliedImpulse = clampedAttackDirection * body.Mass * this.attackImpulse;
+			Vector2 appliedImpulse = clampedAttackDirection * body.Mass * this.attackImpulse * this.attackCharge;
 
 			body.ApplyLocalImpulse(appliedImpulse);
+			this.attackCharge -= this.attackCharge * clampedAttackDirection.Length;
 		}
 
 		void ICmpUpdatable.OnUpdate()
@@ -78,6 +81,19 @@ namespace Game
 				this.directionIndicator.RelativeAngle = this.targetDirection.Angle;
 				this.directionIndicator.RelativeScale = 0.5f + 0.5f * this.targetDirection.Length;
 			}
+
+			// Recover attack charge
+			this.attackCharge = MathF.Clamp(this.attackCharge + Time.TimeMult * Time.SPFMult, 0.0f, 1.0f);
+		}
+
+		void ICmpCollisionListener.OnCollisionBegin(Component sender, CollisionEventArgs args) { }
+		void ICmpCollisionListener.OnCollisionEnd(Component sender, CollisionEventArgs args) { }
+		void ICmpCollisionListener.OnCollisionSolve(Component sender, CollisionEventArgs args)
+		{
+			VisualLog.Default.DrawPoint(args.CollisionData.Pos.X, args.CollisionData.Pos.Y, 0.0f)
+				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
+			VisualLog.Default.DrawText(args.CollisionData.Pos.X, args.CollisionData.Pos.Y, 0.0f, string.Format("{0:F}", args.CollisionData.NormalSpeed))
+				.KeepAlive(100.0f * args.CollisionData.NormalSpeed);
 		}
 	}
 }
