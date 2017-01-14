@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GamePlugin.core</name>
+    </assembly>
+    <members>
+        <member name="T:Game.CameraController">
+            <summary>
+            Moves the camera to follow an object, but keeps it within the constraints
+            of the current tilemaps.
+            </summary>
+        </member>
+        <member name="P:Game.CameraController.Smoothness">
+            <summary>
+            [GET / SET] How smooth the camera should follow its target.
+            </summary>
+        </member>
+        <member name="P:Game.CameraController.TargetObject">
+            <summary>
+            [GET / SET] The target object the camera should follow.
+            </summary>
+        </member>
+        <member name="T:Game.GameCorePlugin">
+            <summary>
+            Defines a Duality core plugin.
+            </summary>
+        </member>
+    </members>
+</doc>
