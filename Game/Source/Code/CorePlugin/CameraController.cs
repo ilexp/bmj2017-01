@@ -19,17 +19,11 @@ namespace Game
 		private float smoothness = 1.0f;
 		private GameObject targetObj = null;
 
-		/// <summary>
-		/// [GET / SET] How smooth the camera should follow its target.
-		/// </summary>
 		public float Smoothness
 		{
 			get { return this.smoothness; }
 			set { this.smoothness = value; }
 		}
-		/// <summary>
-		/// [GET / SET] The target object the camera should follow.
-		/// </summary>
 		public GameObject TargetObject
 		{
 			get { return this.targetObj; }
