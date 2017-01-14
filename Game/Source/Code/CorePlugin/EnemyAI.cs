@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Duality;
+using Duality.Resources;
 using Duality.Components;
 using Duality.Components.Physics;
 
@@ -11,11 +12,30 @@ namespace Game
 	[RequiredComponent(typeof(CharacterController))]
 	public class EnemyAI : Component, ICmpUpdatable
 	{
+		private ContentRef<Prefab> talkMessagePrefab = null;
+
 		[DontSerialize] private CharacterController attackTarget;
 		[DontSerialize] private Vector2 nextWaypoint;
 		[DontSerialize] private Vector2 movement;
 		[DontSerialize] private float targetFindTimer;
+		[DontSerialize] private float talkTimer = MathF.Rnd.NextFloat(5.0f, 15.0f);
 
+		public ContentRef<Prefab> TalkMessagePrefab
+		{
+			get { return this.talkMessagePrefab; }
+			set { this.talkMessagePrefab = value; }
+		}
+
+		private void Talk(string text)
+		{
+			GameObject messageObj = this.talkMessagePrefab.Res.Instantiate(this.GameObj.Transform.Pos + new Vector3(0.0f, -48.0f, -15.0f));
+			PopupText message = messageObj.GetComponent<PopupText>();
+
+			message.Text = text;
+
+			messageObj.Parent = this.GameObj;
+			this.GameObj.ParentScene.AddObject(messageObj);
+		}
 		private CharacterController FindAttackTarget()
 		{
 			Transform transform = this.GameObj.Transform;
@@ -123,7 +143,7 @@ namespace Game
 				float moveSpeed = 0.5f;
 				targetMovement = moveSpeed * directionToTarget;
 			}
-			else if (this.attackTarget.Disposed || this.attackTarget.GameObj == null || !this.HasLineOfSight(this.attackTarget.GameObj, true))
+			else if (this.attackTarget.Disposed || this.attackTarget.GameObj == null || !this.HasLineOfSight(this.attackTarget.GameObj, false))
 			{
 				this.attackTarget = null;
 			}
@@ -146,6 +166,16 @@ namespace Game
 				{
 					character.Attack();
 				}
+
+				//this.talkTimer -= Time.TimeMult * Time.SPFMult;
+				//if (this.talkTimer <= 0.0f)
+				//{
+				//	if (this.attackTarget.Health < 50.0f)
+				//	{
+				//		this.Talk(MathF.Rnd.OneOf(IngameText.LowHealthComment));
+				//	}
+				//	this.talkTimer = MathF.Rnd.NextFloat(10.0f, 30.0f);
+				//}
 
 				if (this.attackTarget.Disposed || !this.HasLineOfSight(this.attackTarget.GameObj, true))
 				{

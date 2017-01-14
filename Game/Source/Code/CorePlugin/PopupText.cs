@@ -13,6 +13,7 @@ namespace Game
 	public class PopupText : Component, ICmpUpdatable, ICmpInitializable
 	{
 		private string text = "Message";
+		private float popUpScale = 1.0f;
 		private float scale = 1.0f;
 		private float timeToLive = 1.0f;
 		private ColorRgba color = ColorRgba.White;
@@ -25,6 +26,11 @@ namespace Game
 		{
 			get { return this.text; }
 			set { this.text = value;  }
+		}
+		public float PopUpScale
+		{
+			get { return this.popUpScale; }
+			set { this.popUpScale = value; }
 		}
 		public float Scale
 		{
@@ -46,9 +52,21 @@ namespace Game
 			get { return this.addVel; }
 			set { this.addVel = value; }
 		}
-		
+		public Vector3 BaseVelocity
+		{
+			get { return this.baseVel; }
+			set { this.baseVel = value; }
+		}
+
 		private void UpdateText()
 		{
+			Transform transform = this.GameObj.Transform;
+			float growPhase = 0.1f / MathF.Max(0.00001f, this.timeToLive);
+			if (this.lifetime < growPhase)
+				transform.RelativeScale = this.scale * MathF.Lerp(1.0f, this.lifetime / growPhase, this.popUpScale);
+			else
+				transform.RelativeScale = this.scale * MathF.Lerp(1.0f, (1.0f + 0.2f * (this.lifetime - growPhase) / (1.0f - growPhase)), this.popUpScale);
+
 			foreach (TextRenderer renderer in this.GameObj.GetComponentsDeep<TextRenderer>())
 			{
 				float alpha = 1.0f - (this.lifetime - 0.75f) / 0.25f;
@@ -60,15 +78,9 @@ namespace Game
 
 		void ICmpUpdatable.OnUpdate()
 		{
-			Transform transform = this.GameObj.Transform;
-
 			this.UpdateText();
 
-			float growPhase = 0.1f / MathF.Max(0.00001f, this.timeToLive);
-			if (this.lifetime < growPhase)
-				transform.RelativeScale = this.scale * this.lifetime / growPhase;
-			else
-				transform.RelativeScale = this.scale * (1.0f + 0.2f * (this.lifetime - growPhase) / (1.0f - growPhase));
+			Transform transform = this.GameObj.Transform;
 			transform.MoveBy((this.baseVel + this.addVel) * Time.TimeMult);
 
 			this.addVel += (Vector3.Zero - this.addVel) * 0.08f * Time.TimeMult;

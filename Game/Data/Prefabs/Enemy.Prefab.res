@@ -218,7 +218,7 @@
               </item>
             </_items>
             <_size dataType="Int">1</_size>
-            <_version dataType="Int">2</_version>
+            <_version dataType="Int">3</_version>
           </shapes>
         </item>
         <item dataType="Struct" type="Duality.Components.Renderers.RigidBodyRenderer" id="978412653">
@@ -270,6 +270,9 @@
         <item dataType="Struct" type="Game.EnemyAI" id="129410639">
           <active dataType="Bool">true</active>
           <gameobj dataType="ObjectRef">379719463</gameobj>
+          <talkMessagePrefab dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Prefab]]">
+            <contentPath dataType="String">Data\Prefabs\TalkPopupText.Prefab.res</contentPath>
+          </talkMessagePrefab>
         </item>
       </_items>
       <_size dataType="Int">5</_size>

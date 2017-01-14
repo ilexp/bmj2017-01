@@ -18,5 +18,11 @@ namespace Game
 			"AAAHH",
 			"AAHH"
 		};
+		public static string[] LowHealthComment = new string[]
+		{
+			"You look a bit pale.",
+			"Don't feel so good?",
+			"Maybe you should see a doctor.",
+		};
 	}
 }
