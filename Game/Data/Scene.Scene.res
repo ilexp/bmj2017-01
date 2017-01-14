@@ -317,7 +317,7 @@
                     </item>
                   </_items>
                   <_size dataType="Int">6</_size>
-                  <_version dataType="Int">412</_version>
+                  <_version dataType="Int">418</_version>
                 </changes>
                 <obj dataType="ObjectRef">806606492</obj>
                 <prefab dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Prefab]]">
@@ -843,7 +843,7 @@
                   <customOutlineMaterial />
                   <fillHollowShapes dataType="Bool">false</fillHollowShapes>
                   <gameobj dataType="ObjectRef">3454975255</gameobj>
-                  <offset dataType="Int">-6</offset>
+                  <offset dataType="Int">-7</offset>
                   <outlineMaterial dataType="Struct" type="Duality.ContentRef`1[[Duality.Resources.Material]]">
                     <contentPath dataType="String">Data\Graphics\ShapeOutline.Material.res</contentPath>
                   </outlineMaterial>

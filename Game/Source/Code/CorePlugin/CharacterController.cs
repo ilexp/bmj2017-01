@@ -65,7 +65,7 @@ namespace Game
 		public ColorRgba PrimaryColor
 		{
 			get { return this.primaryColor; }
-			set { this.primaryColor = value; }
+			set { this.primaryColor = value; this.UpdateColors(); }
 		}
 		public ContentRef<Prefab> HitMessagePrefab
 		{
@@ -115,6 +115,24 @@ namespace Game
 			this.GameObj.ParentScene.AddObject(deathEffectObj);
 
 			this.GameObj.DisposeLater();
+		}
+
+		private void UpdateColors()
+		{
+			RigidBodyRenderer bodyRenderer = this.GameObj.GetComponent<RigidBodyRenderer>();
+			TextRenderer textRenderer = this.GameObj.GetComponentsInChildren<TextRenderer>().FirstOrDefault();
+			SpriteRenderer directionRenderer = this.GameObj.GetComponentsInChildren<SpriteRenderer>().FirstOrDefault();
+
+			ColorHsva primary = this.primaryColor.ToHsva();
+			ColorHsva shape = primary;
+			shape.S *= 0.75f;
+			shape.V = MathF.Lerp(shape.V, 1.0f, 0.75f);
+			ColorHsva text = primary;
+			text.V *= 0.75f;
+
+			textRenderer.ColorTint = text.ToRgba();
+			bodyRenderer.ColorTint = shape.ToRgba();
+			directionRenderer.ColorTint = shape.ToRgba() * bodyRenderer.OutlineMaterial.Res.MainColor;
 		}
 
 		void ICmpUpdatable.OnUpdate()

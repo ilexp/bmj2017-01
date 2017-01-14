@@ -50,9 +50,9 @@
                 <active dataType="Bool">true</active>
                 <colorTint dataType="Struct" type="Duality.Drawing.ColorRgba">
                   <A dataType="Byte">255</A>
-                  <B dataType="Byte">96</B>
-                  <G dataType="Byte">96</G>
-                  <R dataType="Byte">191</R>
+                  <B dataType="Byte">71</B>
+                  <G dataType="Byte">71</G>
+                  <R dataType="Byte">181</R>
                 </colorTint>
                 <customMat />
                 <flipMode dataType="Enum" type="Duality.Components.Renderers.SpriteRenderer+FlipMode" name="None" value="0" />
@@ -127,9 +127,9 @@
                 <blockAlign dataType="Enum" type="Duality.Alignment" name="Center" value="0" />
                 <colorTint dataType="Struct" type="Duality.Drawing.ColorRgba">
                   <A dataType="Byte">255</A>
-                  <B dataType="Byte">85</B>
-                  <G dataType="Byte">85</G>
-                  <R dataType="Byte">216</R>
+                  <B dataType="Byte">29</B>
+                  <G dataType="Byte">29</G>
+                  <R dataType="Byte">153</R>
                 </colorTint>
                 <customMat />
                 <gameobj dataType="ObjectRef">4131898683</gameobj>
@@ -218,7 +218,7 @@
               </item>
             </_items>
             <_size dataType="Int">1</_size>
-            <_version dataType="Int">9</_version>
+            <_version dataType="Int">10</_version>
           </shapes>
         </item>
         <item dataType="Struct" type="Duality.Components.Renderers.RigidBodyRenderer" id="3847165433">
@@ -228,9 +228,9 @@
           </areaMaterial>
           <colorTint dataType="Struct" type="Duality.Drawing.ColorRgba">
             <A dataType="Byte">255</A>
-            <B dataType="Byte">128</B>
-            <G dataType="Byte">128</G>
-            <R dataType="Byte">255</R>
+            <B dataType="Byte">95</B>
+            <G dataType="Byte">95</G>
+            <R dataType="Byte">242</R>
           </colorTint>
           <customAreaMaterial />
           <customOutlineMaterial />
