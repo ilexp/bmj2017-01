@@ -21,4 +21,4 @@ Your viewport will be bigger or smaller depending on your screen resolution - a 
 
 [![](Screenshot.png)](https://gfycat.com/LegitimateTameIndianpalmsquirrel)
 
-_Click on it for bigger (and moving) version._
+_Click on it for a smaller, but animated version._
