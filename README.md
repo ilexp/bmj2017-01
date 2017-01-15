@@ -4,7 +4,7 @@ Experimenting with top-down character and camera controls, game mechanics and pl
 
 ## Running it
 
-**This game requires a gamepad to be played**, no other input methods are supported. It will always use your first gamepad, if you have multiple gamepads plugged in.
+**This game requires a gamepad to be played**, no other input methods are supported. It will always use your first gamepad, if you have multiple gamepads plugged in. One of the things (along with audio) that fell a bit short due to time constraints :)
 
 Your viewport will be bigger or smaller depending on your screen resolution - a bigger screen is an advantage, but not a requirement.
 
